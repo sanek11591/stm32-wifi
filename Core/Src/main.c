@@ -68,7 +68,6 @@ PCD_HandleTypeDef hpcd_USB_FS;
 
 void AT_com(uint8_t *command, int size){
 	flag = 1;
-
 	if (flagf == 0){
 		buffera[0] = command[size];
 		flagf = 1;
@@ -210,8 +209,6 @@ int rncoun(int size, uint8_t *symb){
 	return counternn;
 }
 
-
-
 void foo(uint8_t *command, int size){
     if((strncmp(command,"AT",size-1) == 0 && size > 1) || flag == 1){
     	AT_com(command,size);
@@ -224,11 +221,6 @@ void foo(uint8_t *command, int size){
     	Connect(command,size);
     } else if((strncmp(command,"AT+CIPSEND=0,126\r\n",size-1) == 0 && size > 1) || flag == 5){
     	AT_send(command,size);
-    } else {
-    	flag = 0;
-    	flagf = 0;
-    	counter = 0;
-    	memset(buffera, 0, sizeof(buffera));
     }
 }
 
