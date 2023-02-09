@@ -301,7 +301,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_GPIO_TogglePin(GPIOC, LD4_Pin);
+	  HAL_GPIO_TogglePin(GPIOC, LD5_Pin);
 	  HAL_Delay(100);
     /* USER CODE BEGIN 3 */
   }
