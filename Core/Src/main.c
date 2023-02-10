@@ -174,7 +174,7 @@ void Connect(char *command, int size){
 	counter++;
 	int indicator = rncoun(counter, command);
 	if (indicator == 2){
-		HAL_UART_Transmit_IT(&huart1, "AT+CIPSEND=0,126\r\n", 18);
+		HAL_UART_Transmit_IT(&huart1, (uint8_t*)&"AT+CIPSEND=0,126\r\n", 18);
 		flag = 0;
 		flagf = 0;
 		counter = 0;
@@ -237,7 +237,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 		foo(buffera,counter);
 		counter = 1;
 	}
-	HAL_UART_Receive_IT(&huart1, buffer, 1);
+	HAL_UART_Receive_IT(&huart1, (uint8_t*)&buffer, 1);
 }
 /* USER CODE END PV */
 
@@ -292,7 +292,7 @@ int main(void)
   MX_USB_PCD_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_IT(&huart1, buffer, 1);
+  HAL_UART_Receive_IT(&huart1, (uint8_t*)&buffer, 1);
   HAL_UART_Transmit_IT(&huart1, AT, sizeof(AT));
   /* USER CODE END 2 */
 
