@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include <string.h>
+#include <stdio.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -45,7 +46,7 @@ uint8_t AT[4] = "AT\r\n";
 uint8_t ATCIFSR[10] = "AT+CIFSR\r\n";
 uint8_t AT_CIPMUX[13] ="AT+CIPMUX=1\r\n";
 uint8_t AT_CIPSERVER[19] = "AT+CIPSERVER=1,80\r\n";
-uint8_t html[128] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\nESP8266 xyu server example by\r\n</html>\r\n";
+uint8_t html[] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\nESP8266 server example by\r\n</html>\r\n";
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -174,7 +175,10 @@ void Connect(char *command, int size){
 	counter++;
 	int indicator = rncoun(counter, command);
 	if (indicator == 2){
-		HAL_UART_Transmit_IT(&huart1, (uint8_t*)&"AT+CIPSEND=0,126\r\n", 18);
+		char send[40];
+		int k = sizeof(html) - 1;
+		snprintf(send, sizeof(send), "%s%d%s", "AT+CIPSEND=0,",k,"\r\n");
+		HAL_UART_Transmit(&huart1, (uint8_t*)&send, 18, 100);
 		flag = 0;
 		flagf = 0;
 		counter = 0;
@@ -218,9 +222,8 @@ void foo(char *command, int size){
     } else if ((strncmp(command,"AT+CIPSERVER=1,80",size-1) == 0 && size > 1) || flag == 3){
     	AT_CIPSERVER_com(command,size);
     } else if ((strncmp(command,"0,CONNECT",size-1) == 0 && size > 1) || flag == 4){
-    	flag = 4;
     	Connect(command,size);
-    } else if((strncmp(command,"AT+CIPSEND=0,126\r\n",size-1) == 0 && size > 1) || flag == 5){
+    } else if((strncmp(command,"AT+CIPSEND=0,129",10) == 0 && size > 1) || flag == 5){
     	AT_send(command,size);
     }
 }
@@ -301,7 +304,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_GPIO_TogglePin(GPIOC, LD5_Pin);
+	  HAL_GPIO_TogglePin(GPIOC, LD4_Pin);
 	  HAL_Delay(100);
     /* USER CODE BEGIN 3 */
   }
